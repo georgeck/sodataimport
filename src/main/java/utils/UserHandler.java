@@ -18,6 +18,8 @@ public class UserHandler extends DefaultHandler {
     private User user = new User();
     private UserCounters userCounters = new UserCounters();
 
+    private int counter = 0;
+
     void setSession(Session session) {
         this.session = session;
         PreparedStatement statement = session.prepare(prepareStatement);
@@ -59,10 +61,13 @@ public class UserHandler extends DefaultHandler {
 
                 session.execute(boundStatement.bind(user.getId(), user.getAboutme(), user.getAccountid(), user.getAge(), user.getCreationdate(),
                         user.getDisplayname(), user.getLastaccessdate(), user.getLocation(), user.getProfileimageurl(), user.getReputation(), user.getWebsiteurl()));
+                counter++;
+
             }
         }
         catch (Throwable ignored) {
             ignored.printStackTrace();
+            System.out.println("counter = " + counter);
         }
     }
 }
