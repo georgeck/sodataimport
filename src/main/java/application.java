@@ -37,6 +37,12 @@ public class application {
             host = args[1];
         }
 
+        String keySpaceName = "ai_stackexchange_com";
+        if (args.length > 2){
+            keySpaceName = args[2];
+        }
+        System.out.println("keySpaceName = " + keySpaceName);
+
         System.out.println("Using host = " + host);
 
         // Open a connection to Cassandra
@@ -47,7 +53,7 @@ public class application {
                         .addContactPoint(host)
                         .withRetryPolicy(DefaultRetryPolicy.INSTANCE)
                         .build();
-            session = cluster.connect("ai_stackexchange_com");
+            session = cluster.connect(keySpaceName);
         }catch (Throwable throwable){
             System.out.println("ErrorMessage = " + throwable.getMessage());
             throwable.printStackTrace();
