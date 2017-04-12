@@ -17,7 +17,7 @@ public class UserHandler extends DefaultHandler {
     private BoundStatement boundStatement;
     private User user = new User();
     private UserCounters userCounters = new UserCounters();
-
+    private String tempValue;
     private int counter = 0;
 
     void setSession(Session session) {
@@ -41,8 +41,10 @@ public class UserHandler extends DefaultHandler {
 
                 user.setAccountid(Integer.valueOf(attributes.getValue("AccountId")));
 
-                user.setAge(Integer.valueOf(attributes.getValue("Age")));
-
+                tempValue = attributes.getValue("Age");
+                if(tempValue.length() > 0) {
+                    user.setAge(Integer.valueOf(tempValue));
+                }
                 user.setCreationdate(Timestamp.valueOf(attributes.getValue("CreationDate").replace('T', ' ')));
 
                 user.setDisplayname(attributes.getValue("DisplayName"));
@@ -64,8 +66,7 @@ public class UserHandler extends DefaultHandler {
                 counter++;
 
             }
-        }
-        catch (Throwable ignored) {
+        } catch (Throwable ignored) {
             ignored.printStackTrace();
             System.out.println("counter = " + counter);
         }
