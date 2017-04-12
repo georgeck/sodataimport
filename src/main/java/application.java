@@ -75,7 +75,7 @@ public class application {
             System.out.format("%s %s \n", row.getInt("id"), row.getTimestamp("creationdate"));
         }
 
-        System.out.println("Connected to :" + args[1]);
+        System.out.println("Connected to :" + host);
 
         Importer importer = new Importer();
         importer.usesImporter(args[0], session);
