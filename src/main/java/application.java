@@ -16,7 +16,7 @@ public class application {
     public static void main(String[] args) {
 
         if(args.length == 0){
-            System.out.println("No command line arguments specified");
+            System.out.println("No command line arguments specified.");
             return;
         }
 
@@ -26,6 +26,11 @@ public class application {
             System.out.println("Could not find file: " + args[0]);
             return;
         }
+        else {
+            System.out.println("Import data from ==> " + args[0]);
+        }
+
+        String fileName = args[0];
 
         String host = "localhost";
         if (args.length > 1){
@@ -33,7 +38,6 @@ public class application {
         }
 
         System.out.println("Using host = " + host);
-
 
         // Open a connection to Cassandra
         Session session;
@@ -49,36 +53,10 @@ public class application {
             throwable.printStackTrace();
             return;
         }
-
-        ResultSet results;
-
-        PreparedStatement statement = session.prepare(
-                "INSERT INTO user (id, creationdate) VALUES (?,?);");
-        BoundStatement boundStatement = new BoundStatement(statement);
-
-        Timestamp timestamp = Timestamp.valueOf("2016-08-02T00:14:10.580".replace('T', ' '));
-
-        Stopwatch stopwatch = Stopwatch.createStarted();
-        for (int i = 0; i < 1000; i++){
-            session.execute(boundStatement.bind(i, timestamp));
-        }
-        stopwatch.stop();
-        long millis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
-
-        System.out.println("millis = " + millis);
-
-        Statement select = QueryBuilder.select().all().from("ai_stackexchange_com", "user")
-                .where(eq("id", 2));
-        results = session.execute(select);
-
-        for (Row row : results) {
-            System.out.format("%s %s \n", row.getInt("id"), row.getTimestamp("creationdate"));
-        }
-
         System.out.println("Connected to :" + host);
 
         Importer importer = new Importer();
-        importer.usesImporter(args[0], session);
+        importer.usesImporter(fileName, session);
 
         cluster.close();
     }

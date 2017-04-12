@@ -1,20 +1,28 @@
 package utils;
 
 import com.datastax.driver.core.Session;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
 
 public class Importer {
 
     public void usesImporter(String inputFileName, Session session){
 
-        Path path = Paths.get(inputFileName);
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        SAXParser saxParser;
+        try {
+            saxParser = factory.newSAXParser();
+            UserHandler userhandler = new UserHandler();
+            userhandler.setSession(session);
 
-        // open the file
+            saxParser.parse(inputFileName, userhandler);
 
-        // SAX read each line
-
-
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
