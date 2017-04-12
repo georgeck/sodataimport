@@ -42,7 +42,7 @@ public class UserHandler extends DefaultHandler {
                 user.setAccountid(Integer.valueOf(attributes.getValue("AccountId")));
 
                 tempValue = attributes.getValue("Age");
-                if(tempValue.length() > 0) {
+                if(tempValue != null && tempValue.length() > 0) {
                     user.setAge(Integer.valueOf(tempValue));
                 }
                 user.setCreationdate(Timestamp.valueOf(attributes.getValue("CreationDate").replace('T', ' ')));
